@@ -3,7 +3,6 @@ import bcrypt from "bcryptjs";
 import type { Response } from "express";
 import { RefreshTokenModel } from "../../db/models/refresh-token.model.js";
 import { UserModel, type UserDocument } from "../../db/models/user.model.js";
-import { isProduction } from "../../env.js";
 import { AppError } from "../shared/errors.js";
 import { signAccess, signRefresh, verifyRefresh } from "../shared/jwt.js";
 import {
@@ -18,14 +17,10 @@ import type { PublicIdentity } from "./auth.types.js";
 const INVALID_LOGIN = "Invalid email or password.";
 
 function cookieOptions(maxAge?: number) {
-  // Cross-site cookies need SameSite=None, which browsers only accept over
-  // HTTPS. On localhost the two dev servers are same-site, so Lax works and
-  // keeps the cookie flowing without TLS.
-  const production = isProduction();
   const base = {
     httpOnly: true,
-    secure: production,
-    sameSite: production ? ("none" as const) : ("lax" as const),
+    secure: true,
+    sameSite: "none" as const,
     path: "/",
   };
   return maxAge === undefined ? base : { ...base, maxAge };
