@@ -10,6 +10,15 @@ enforces that on every request.
 - **Database** — MongoDB via Mongoose
 - **Auth** — JWT access + refresh tokens in httpOnly cookies
 
+### Live demo
+
+| | URL |
+| --- | --- |
+| **Frontend** | https://web-plant-project-management-web-ap.vercel.app/login |
+| **API** | https://webplant-project-management-webapp.onrender.com |
+| **Health** | https://webplant-project-management-webapp.onrender.com/health |
+| **API base** | https://webplant-project-management-webapp.onrender.com/api/v1 |
+
 ---
 
 ## Features
@@ -260,14 +269,17 @@ curl -b jar.txt http://localhost:4000/api/v1/projects
 
 ## Deployment
 
-The two halves deploy independently.
+The app is deployed as two services:
 
-**API** (Render, Railway, Fly, any Node host): build with `pnpm build`, start
-with `pnpm start`. Set `NODE_ENV=production`, `MONGODB_URI`, both JWT secrets,
-and `WEB_ORIGIN` to the deployed frontend origin.
+- **Frontend (Vercel):** https://web-plant-project-management-web-ap.vercel.app  
+  Env: `NEXT_PUBLIC_API_BASE_URL=https://webplant-project-management-webapp.onrender.com/api/v1`
+- **API (Render):** https://webplant-project-management-webapp.onrender.com  
+  Health: https://webplant-project-management-webapp.onrender.com/health  
+  Env: `NODE_ENV=production`, `MONGODB_URI`, both JWT secrets, and
+  `WEB_ORIGIN=https://web-plant-project-management-web-ap.vercel.app`
 
-**Web** (Vercel or any Next.js host): set `NEXT_PUBLIC_API_BASE_URL` to the
-deployed API URL, including `/api/v1`.
+To redeploy elsewhere: API — `pnpm build` then `pnpm start`; Web — any Next.js
+host with `NEXT_PUBLIC_API_BASE_URL` pointing at the API including `/api/v1`.
 
 Because the cookies are `SameSite=None` in production, both halves must be
 served over HTTPS.
