@@ -19,6 +19,8 @@ enforces that on every request.
 | **Health** | https://webplant-project-management-webapp.onrender.com/health |
 | **API base** | https://webplant-project-management-webapp.onrender.com/api/v1 |
 
+**Demo account** (created by the seed script): `demo@email.com` / `demo@123`
+
 ---
 
 ## Features
@@ -130,8 +132,8 @@ node -e "console.log(require('crypto').randomBytes(48).toString('base64url'))"
 | `MONGODB_URI` | yes | Connection string from the step above |
 | `JWT_ACCESS_SECRET` | yes | At least 32 characters |
 | `JWT_REFRESH_SECRET` | yes | At least 32 characters, different from the access secret |
-| `SEED_USER_EMAIL` | only for seeding | Demo account email |
-| `SEED_USER_PASSWORD` | only for seeding | Demo account password, at least 8 characters |
+| `SEED_USER_EMAIL` | only for seeding | Demo account email. Use `demo@email.com` |
+| `SEED_USER_PASSWORD` | only for seeding | Demo account password, at least 8 characters. Use `demo@123` |
 
 Start it:
 
@@ -142,11 +144,18 @@ pnpm dev
 The API listens on `http://localhost:4000`. Health check:
 `http://localhost:4000/health`
 
-Optionally load a demo account with two projects and five tasks:
+Optionally load a demo account with two projects and five tasks. Set these in `api/.env` first:
+
+```
+SEED_USER_EMAIL=demo@email.com
+SEED_USER_PASSWORD=demo@123
+```
 
 ```bash
 pnpm db:seed
 ```
+
+Sign in with **demo@email.com** / **demo@123**.
 
 ### 2. Frontend
 
